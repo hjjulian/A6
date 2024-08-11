@@ -1,3 +1,4 @@
+require('pg');
 const Sequelize = require('sequelize');
 var sequelize = new Sequelize('A6', 'A6_owner', 'rGO1Cw9jXYgu', {     
     host: 'ep-jolly-dawn-a5afftek.us-east-2.aws.neon.tech',     
@@ -56,7 +57,7 @@ const Student = sequelize.define('Student', {
 Course.hasMany(Student, { foreignKey: 'course' });
 Student.belongsTo(Course, { foreignKey: 'course' });
 
-// Initialize database
+// Function to initialize the data collection by syncing the Sequelize models
 function initialize() {
     return new Promise((resolve, reject) => {
         sequelize.sync()
@@ -69,7 +70,7 @@ function initialize() {
     });
 }
 
-// Get all students
+// Function to get all students from the database
 function getAllStudents() {
     return new Promise((resolve, reject) => {
         Student.findAll()
@@ -82,7 +83,7 @@ function getAllStudents() {
     });
 }
 
-// Get all courses
+// Function to get all courses from the database
 function getCourses() {
     return new Promise((resolve, reject) => {
         Course.findAll()
@@ -95,7 +96,7 @@ function getCourses() {
     });
 }
 
-// Get students by course
+// Function to get students by course from the database
 function getStudentsByCourse(course) {
     return new Promise((resolve, reject) => {
         Student.findAll({ where: { course: course } })
@@ -112,7 +113,7 @@ function getStudentsByCourse(course) {
     });
 }
 
-// Get a student by student number
+// Function to get a student by student number from the database
 function getStudentByNum(num) {
     return new Promise((resolve, reject) => {
         Student.findOne({ where: { studentNum: num } })
@@ -129,7 +130,7 @@ function getStudentByNum(num) {
     });
 }
 
-// Add a student to the database
+// Function to add a student to the database
 function addStudent(studentData) {
     return new Promise((resolve, reject) => {
         studentData.TA = (studentData.TA) ? true : false;
@@ -150,7 +151,7 @@ function addStudent(studentData) {
     });
 }
 
-// Get a course by course ID
+// Function to get a course by course ID from the database
 function getCourseById(id) {
     return new Promise((resolve, reject) => {
         Course.findOne({ where: { courseId: id } })
@@ -167,7 +168,7 @@ function getCourseById(id) {
     });
 }
 
-// Update a student
+// Function to update a student in the database
 function updateStudent(studentData) {
     return new Promise((resolve, reject) => {
         studentData.TA = (studentData.TA) ? true : false;
@@ -190,9 +191,10 @@ function updateStudent(studentData) {
     });
 }
 
-// Add a course to the database
+// Function to add a course to the database
 function addCourse(courseData) {
     return new Promise((resolve, reject) => {
+        // Ensure any blank values in courseData are set to null
         for (let prop in courseData) {
             if (courseData[prop] === "") {
                 courseData[prop] = null;
@@ -209,9 +211,10 @@ function addCourse(courseData) {
     });
 }
 
-// Update a course in the database
+// Function to update a course in the database
 function updateCourse(courseData) {
     return new Promise((resolve, reject) => {
+        // Ensure any blank values in courseData are set to null
         for (let prop in courseData) {
             if (courseData[prop] === "") {
                 courseData[prop] = null;
@@ -230,7 +233,7 @@ function updateCourse(courseData) {
     });
 }
 
-// Delete a course by ID
+// Function to delete a course by ID from the database
 function deleteCourseById(id) {
     return new Promise((resolve, reject) => {
         Course.destroy({
@@ -245,11 +248,12 @@ function deleteCourseById(id) {
     });
 }
 
-// Delete a student by student number
 function deleteStudentByNum(studentNum) {
     return new Promise((resolve, reject) => {
         Student.destroy({
-            where: { studentNum: studentNum }
+            where: {
+                studentNum: studentNum
+            }
         })
         .then(() => resolve())
         .catch((err) => reject("Unable to delete student / Student not found"));
