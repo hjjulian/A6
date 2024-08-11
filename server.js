@@ -5,8 +5,8 @@
 *  (including 3rd party web sites) or distributed to other students.
 * 
 *  Name: Hannah Joy Julian Student ID: hjjulian - 152589230 Date: August 11, 2024
-*Vercel Link: 
-*Github Link: 
+*Vercel Link: https://a6-xi.vercel.app/
+*Github Link: https://github.com/hjjulian/A6
 ********************************************************************************/ 
 
 
